@@ -6,14 +6,14 @@ app = Flask(__name__)
 contas_a_pagar = []
 
 # Saldo total (salário)
-saldo_total = 0
+renda = 0
 
 # Saldo restante
 saldo_restante = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html', contas=contas_a_pagar, saldo_total=saldo_total, saldo_restante=saldo_restante)
+    return render_template('index.html', contas=contas_a_pagar, renda=renda, saldo_restante=saldo_restante)
 
 @app.route('/adicionar_conta', methods=['POST'])
 def adicionar_conta():
@@ -32,10 +32,10 @@ def pagar_conta(indice):
 
 @app.route('/configurar_saldo', methods=['POST'])
 def configurar_saldo():
-    global saldo_total
+    global renda
     global saldo_restante
-    saldo_total = float(request.form['saldo_total'])
-    saldo_restante = saldo_total
+    renda = float(request.form['renda'])
+    saldo_restante = renda
     return redirect('/')
 
 if __name__ == '__main__':
