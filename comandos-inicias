@@ -21,3 +21,6 @@
   git checkout BRANCH
   git fetch origin
   git reset --hard origin/BRANCH_REMOTA
+
+#obter as atualizações da main
+  git pull origin main
