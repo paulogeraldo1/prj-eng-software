@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Financeiro</title>
+</head>
+<body>
+    <h1>App Financeiro</h1>
+    <h2>Saldo Total: R$ {{ saldo_total }}</h2>
+    <h2>Saldo Restante: R$ {{ saldo_restante }}</h2>
+    <form action="/configurar_saldo" method="POST">
+        <label for="saldo_total">Informe seu Saldo Total (Salário):</label>
+        <input type="text" id="saldo_total" name="saldo_total"><br>
+        <input type="submit" value="Configurar">
+    </form>
+    <h2>Contas a Pagar</h2>
+    <ul>
+        {% for conta in contas %}
+            <li>{{ conta.descricao }} - R$ {{ conta.valor }} <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a></li>
+        {% endfor %}
+    </ul>
+    <h2>Adicionar Conta</h2>
+    <form action="/adicionar_conta" method="POST">
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" name="descricao"><br>
+        <label for="valor">Valor:</label>
+        <input type="text" id="valor" name="valor"><br>
+        <input type="submit" value="Adicionar">
+    </form>
+</body>
+</html>
