@@ -56,13 +56,13 @@ def adicionar_conta():
     # Verifica se a conta já está na lista de contas pagas
     for conta in contas_pagas:
         if conta['descricao'] == descricao:
-            flash('Esta conta já foi paga anteriormente.', 'error')
+            flash('Esta conta já foi paga.', 'error')
             return redirect('/')
     
     # Verifica se a conta já está na lista de contas a pagar
     for conta in contas_a_pagar:
         if conta['descricao'] == descricao:
-            flash('Esta conta já foi adicionada anteriormente.', 'error')
+            flash('Esta conta já foi adicionada.', 'error')
             return redirect('/')
     
     contas_a_pagar.append({'descricao': descricao, 'valor': valor})
@@ -73,6 +73,12 @@ def adicionar_conta():
 def pagar_conta(indice):
     global saldo_restante
     global renda
+    
+    # Verifica se a lista contas_a_pagar está vazia
+    if not contas_a_pagar:
+        flash('Não há contas a pagar.', 'error')
+        return redirect('/')
+    
     conta = contas_a_pagar.pop(indice)
     contas_pagas.append(conta)
     return redirect('/')
