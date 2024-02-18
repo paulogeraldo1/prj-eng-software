@@ -1,41 +1,80 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__)
+app.secret_key = 'sua_chave_secreta_aqui'
 
-# Lista de contas a pagar
+# Variáveis globais
 contas_a_pagar = []
-
-# Saldo total (salário)
+contas_pagas = []
 renda = 0
-
-# Saldo restante
 saldo_restante = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html', contas=contas_a_pagar, renda=renda, saldo_restante=saldo_restante)
+    # Cálculo do saldo restante
+    total_contas_pagas = sum(conta['valor'] for conta in contas_pagas)
+    saldo_restante = renda - total_contas_pagas
+    
+    return render_template('index.html', contas=contas_a_pagar, contas_pagas=contas_pagas, renda=renda, saldo_restante=saldo_restante, total_contas_pagas=total_contas_pagas)
+
+@app.route('/configurar_saldo', methods=['POST'])
+def configurar_saldo():
+    global renda
+    renda_str = request.form['renda'].strip()
+    
+    if not renda_str:
+        flash('Por favor, preencha o campo de renda.', 'error')
+        return redirect('/')
+    
+    try:
+        renda = float(renda_str)
+    except ValueError:
+        flash('O valor da renda inserido não é válido.', 'error')
+        return redirect('/')
+    
+    return redirect('/')
+
 
 @app.route('/adicionar_conta', methods=['POST'])
 def adicionar_conta():
     global saldo_restante
-    descricao = request.form['descricao']
-    valor = float(request.form['valor'])
+    descricao = request.form['descricao'].strip()  # Remove espaços em branco extras
+    valor_str = request.form['valor'].strip()  # Remove espaços em branco extras
+    
+    # Verifica se os campos estão vazios
+    if not descricao or not valor_str:
+        flash('Por favor, preencha todos os campos.', 'error')
+        return redirect('/')
+    
+    # Tenta converter o valor para float
+    try:
+        valor = float(valor_str)
+    except ValueError:
+        flash('O valor inserido não é válido.', 'error')
+        return redirect('/')
+    
+    # Verifica se a conta já está na lista de contas pagas
+    for conta in contas_pagas:
+        if conta['descricao'] == descricao:
+            flash('Esta conta já foi paga anteriormente.', 'error')
+            return redirect('/')
+    
+    # Verifica se a conta já está na lista de contas a pagar
+    for conta in contas_a_pagar:
+        if conta['descricao'] == descricao:
+            flash('Esta conta já foi adicionada anteriormente.', 'error')
+            return redirect('/')
+    
     contas_a_pagar.append({'descricao': descricao, 'valor': valor})
+    flash('Conta adicionada com sucesso.', 'success')
     return redirect('/')
 
 @app.route('/pagar_conta/<int:indice>')
 def pagar_conta(indice):
     global saldo_restante
-    conta = contas_a_pagar.pop(indice)
-    saldo_restante -= conta['valor']
-    return redirect('/')
-
-@app.route('/configurar_saldo', methods=['POST'])
-def configurar_saldo():
     global renda
-    global saldo_restante
-    renda = float(request.form['renda'])
-    saldo_restante = renda
+    conta = contas_a_pagar.pop(indice)
+    contas_pagas.append(conta)
     return redirect('/')
 
 if __name__ == '__main__':
