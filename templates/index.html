@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Financeiro</title>
@@ -78,9 +79,13 @@
             <h2>Contas a Pagar</h2>
             <ul>
                 {% for conta in contas %}
-                    <li{% if conta.paga %} class="paid"{% endif %}>{{ conta.descricao }} - R$ {{ conta.valor }} <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a></li>
+                    <li{% if conta.paga %} class="paid"{% endif %}>
+                        {{ conta.descricao }} - R$ {{ conta.valor }} 
+                        <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a>
+                        <a href="/excluir_conta/{{ loop.index0 }}">Excluir</a>
+                    </li>
                 {% endfor %}
-            </ul>
+            </ul> 
             <h2>Adicionar Conta</h2>
             <form action="/adicionar_conta" method="POST">
                 <label for="descricao">Descrição:</label>

@@ -82,5 +82,12 @@ def pagar_conta(indice):
     contas_pagas.append(conta)
     return redirect('/')
 
+@app.route('/excluir_conta/<int:indice>')
+def excluir_conta(indice):
+    del contas_a_pagar[indice]
+    flash('Conta excluída com sucesso!', 'success')
+    return redirect('/')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
