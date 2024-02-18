@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__)
+app.secret_key = 'qwerty1234'
 
 # Variáveis globais
 contas_a_pagar = []
@@ -87,6 +88,38 @@ def excluir_conta(indice):
     flash('Conta excluída com sucesso!', 'success')
     return redirect('/')
 
+@app.route('/editar_conta/<int:indice>', methods=['GET', 'POST'])
+def editar_conta(indice):
+    if request.method == 'GET':
+        # Verifica se o índice está dentro dos limites da lista contas_a_pagar
+        if indice < 0 or indice >= len(contas_a_pagar):
+            flash('Conta não encontrada.', 'error')
+            return redirect('/')
+        
+        conta = contas_a_pagar[indice]
+        return render_template('editar_conta.html', indice=indice, conta=conta)
+    
+    elif request.method == 'POST':
+        descricao = request.form['descricao'].strip()
+        valor_str = request.form['valor'].strip()
+        
+        # Verifica se os campos estão vazios
+        if not descricao or not valor_str:
+            flash('Por favor, preencha todos os campos.', 'error')
+            return redirect(f'/editar_conta/{indice}')
+        
+        # Tenta converter o valor para float
+        try:
+            valor = float(valor_str)
+        except ValueError:
+            flash('O valor inserido não é válido.', 'error')
+            return redirect(f'/editar_conta/{indice}')
+        
+        # Atualiza os dados da conta
+        contas_a_pagar[indice]['descricao'] = descricao
+        contas_a_pagar[indice]['valor'] = valor
+        flash('Conta atualizada com sucesso.', 'success')
+        return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -82,6 +82,7 @@
                     <li{% if conta.paga %} class="paid"{% endif %}>
                         {{ conta.descricao }} - R$ {{ conta.valor }} 
                         <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a>
+                        <a href="/editar_conta/{{ loop.index0 }}">Editar</a>
                         <a href="/excluir_conta/{{ loop.index0 }}">Excluir</a>
                     </li>
                 {% endfor %}
