@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_aqui'
 
 # Variáveis globais
 contas_a_pagar = []
