@@ -73,7 +73,6 @@ def adicionar_conta():
 def pagar_conta(indice):
     global saldo_restante
     global renda
-    
     # Verifica se a lista contas_a_pagar está vazia
     if not contas_a_pagar:
         flash('Não há contas a pagar.', 'error')
