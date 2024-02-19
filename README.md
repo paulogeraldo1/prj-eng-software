@@ -12,7 +12,7 @@ Esta aplicação permite aos usuários gerenciar suas finanças, incluindo o reg
 Necessário ter o Pyhton instalado.
 ## Como usar
 1. Clone este repositório:
-  git clone https://github.com/seu-usuario/app-financeiro.git
+  git clone https://github.com/paulogeraldo1/prj-eng-software
 2. Navegue até o diretório do projeto
 3. Instale as dependências usando o pip:
   pip install -r requirements.txt
