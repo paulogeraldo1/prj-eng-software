@@ -4,7 +4,6 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = 'qwerty1234'
 
-# Variáveis globais
 contas_a_pagar = []
 contas_pagas = []
 renda = 0
@@ -16,7 +15,6 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'usuario' not in session:
-#            flash('Faça login para acessar esta página.', 'error')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -34,14 +32,12 @@ def autenticar():
         session['usuario'] = usuario
         return redirect('/index')
     else:
-#        flash('Credenciais inválidas. Por favor, tente novamente.', 'error')
         return render_template('login.html', error=True)
     
 
 @app.route('/index')
 @login_required
 def index():
-    # Cálculo do saldo restante
     total_contas_pagas = sum(conta['valor'] for conta in contas_pagas)
     saldo_restante = renda - total_contas_pagas
     
@@ -51,7 +47,6 @@ def index():
 @login_required
 def logout():
     session.pop('usuario', None)
-#    flash('Logout realizado com sucesso.', 'success')
     return redirect(url_for('login'))
 
 
@@ -78,28 +73,24 @@ def configurar_saldo():
 @login_required
 def adicionar_conta():
     global saldo_restante
-    descricao = request.form['descricao'].strip()  # Remove espaços em branco extras
-    valor_str = request.form['valor'].strip()  # Remove espaços em branco extras
+    descricao = request.form['descricao'].strip()
+    valor_str = request.form['valor'].strip() 
     
-    # Verifica se os campos estão vazios
     if not descricao or not valor_str:
         flash('Por favor, preencha todos os campos.', 'error')
         return redirect('/index')
     
-    # Tenta converter o valor para float
     try:
         valor = float(valor_str)
     except ValueError:
         flash('O valor inserido não é válido.', 'error')
         return redirect('/index')
     
-    # Verifica se a conta já está na lista de contas pagas
     for conta in contas_pagas:
         if conta['descricao'] == descricao:
             flash('Esta conta já foi paga.', 'error')
             return redirect('/index')
     
-    # Verifica se a conta já está na lista de contas a pagar
     for conta in contas_a_pagar:
         if conta['descricao'] == descricao:
             flash('Esta conta já foi adicionada.', 'error')
@@ -114,7 +105,6 @@ def adicionar_conta():
 def pagar_conta(indice):
     global saldo_restante
     global renda
-    # Verifica se a lista contas_a_pagar está vazia
     if not contas_a_pagar:
         flash('Não há contas a pagar.', 'error')
         return redirect('/index')
@@ -134,7 +124,6 @@ def excluir_conta(indice):
 @login_required
 def editar_conta(indice):
     if request.method == 'GET':
-        # Verifica se o índice está dentro dos limites da lista contas_a_pagar
         if indice < 0 or indice >= len(contas_a_pagar):
             flash('Conta não encontrada.', 'error')
             return redirect('/index')
@@ -146,19 +135,16 @@ def editar_conta(indice):
         descricao = request.form['descricao'].strip()
         valor_str = request.form['valor'].strip()
         
-        # Verifica se os campos estão vazios
         if not descricao or not valor_str:
             flash('Por favor, preencha todos os campos.', 'error')
             return redirect(f'/editar_conta/{indice}')
         
-        # Tenta converter o valor para float
         try:
             valor = float(valor_str)
         except ValueError:
             flash('O valor inserido não é válido.', 'error')
             return redirect(f'/editar_conta/{indice}')
         
-        # Atualiza os dados da conta
         contas_a_pagar[indice]['descricao'] = descricao
         contas_a_pagar[indice]['valor'] = valor
         flash('Conta atualizada com sucesso.', 'success')
