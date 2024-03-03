@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
@@ -12,59 +13,75 @@
             padding: 0;
             background-color: #f4f4f4;
         }
+
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
         }
+
         .column {
             flex: 50%;
             padding: 0 20px;
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3 {
             color: #333;
         }
+
         form {
             margin-bottom: 20px;
         }
-        input[type="text"], input[type="submit"] {
+
+        input[type="text"],
+        input[type="submit"] {
             padding: 8px;
             margin: 5px 0;
             border: 1px solid #ccc;
             border-radius: 3px;
         }
+
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background-color: #4CAF50;
         }
+
         ul {
             list-style-type: none;
             padding: 0;
         }
+
         li {
             margin-bottom: 5px;
         }
+
         .paid {
             color: #666;
             text-decoration: line-through;
         }
+
         .flash-messages {
             margin-top: 20px;
         }
+
         .flash-messages li {
             color: red;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="column">
@@ -79,14 +96,14 @@
             <h2>Contas a Pagar</h2>
             <ul>
                 {% for conta in contas %}
-                    <li{% if conta.paga %} class="paid"{% endif %}>
-                        {{ conta.descricao }} - R$ {{ conta.valor }} 
-                        <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a>
-                        <a href="/editar_conta/{{ loop.index0 }}">Editar</a>
-                        <a href="/excluir_conta/{{ loop.index0 }}">Excluir</a>
+                <li{% if conta.paga %} class="paid" {% endif %}>
+                    {{ conta.descricao }} - R$ {{ conta.valor }}
+                    <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a>
+                    <a href="/editar_conta/{{ loop.index0 }}">Editar</a>
+                    <a href="/excluir_conta/{{ loop.index0 }}">Excluir</a>
                     </li>
-                {% endfor %}
-            </ul> 
+                    {% endfor %}
+            </ul>
             <h2>Adicionar Conta</h2>
             <form action="/adicionar_conta" method="POST">
                 <label for="descricao">Descrição:</label>
@@ -97,28 +114,29 @@
             </form>
             <form action="/logout" method="GET" class="logout-btn">
                 <input type="submit" value="Logout">
-            </form>            
+            </form>
         </div>
         <div class="column">
             <h2>Contas Pagas</h2>
             <ul>
                 {% for conta in contas_pagas %}
-                    <li class="paid">{{ conta.descricao }} - R$ {{ conta.valor }}</li>
+                <li class="paid">{{ conta.descricao }} - R$ {{ conta.valor }}</li>
                 {% endfor %}
             </ul>
             <p>Total Pago: R$ {{ total_contas_pagas }}</p>
 
             <!-- Exibir mensagens de erro -->
             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flash-messages">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% endwith %}
         </div>
     </div>
 </body>
+
 </html>
