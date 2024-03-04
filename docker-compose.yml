@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+
+  app-financeiro:
+    image: pgls/prjengsoftware:1.1
+    container_name: app-financeiro
+    mem_limit: 500m
+    ports:
+      - 85:8000

@@ -20,3 +20,8 @@ Necessário ter o Pyhton instalado.
   pyhton app.py
 5. Abra seu navegador e acesse http://localhost:5000 para visualizar a aplicação.
 
+## Como usar em docker
+Basta executar o docker compose, e a aplicação estará rodando na sua porta 85
+Obs: verificar a última versão no DockerHub: https://hub.docker.com/r/pgls/prjengsoftware
+
+docker-compose up -d
