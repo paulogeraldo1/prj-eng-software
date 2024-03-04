@@ -25,3 +25,8 @@ Basta executar o docker compose, e a aplicação estará rodando na sua porta 85
 Obs: verificar a última versão no DockerHub: https://hub.docker.com/r/pgls/prjengsoftware
 
 docker-compose up -d
+ou
+docker run -p 85:8000 pgls/prjengsoftware:1.2
+
+Usuário: user
+Senha: 1234
