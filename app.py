@@ -75,6 +75,7 @@ def adicionar_conta():
     global saldo_restante
     descricao = request.form['descricao'].strip()
     valor_str = request.form['valor'].strip() 
+    categoria = request.form['categoria'].strip()
     
     if not descricao or not valor_str:
         flash('Por favor, preencha todos os campos.', 'error')
@@ -96,7 +97,7 @@ def adicionar_conta():
             flash('Esta conta já foi adicionada.', 'error')
             return redirect('/index')
     
-    contas_a_pagar.append({'descricao': descricao, 'valor': valor})
+    contas_a_pagar.append({'descricao': descricao, 'valor': valor, 'categoria': categoria})
     flash('Conta adicionada com sucesso.', 'success')
     return redirect('/index')
 
@@ -134,8 +135,9 @@ def editar_conta(indice):
     elif request.method == 'POST':
         descricao = request.form['descricao'].strip()
         valor_str = request.form['valor'].strip()
+        categoria = request.form['categoria'].strip()
         
-        if not descricao or not valor_str:
+        if not descricao or not valor_str or not categoria:
             flash('Por favor, preencha todos os campos.', 'error')
             return redirect(f'/editar_conta/{indice}')
         
@@ -147,6 +149,7 @@ def editar_conta(indice):
         
         contas_a_pagar[indice]['descricao'] = descricao
         contas_a_pagar[indice]['valor'] = valor
+        contas_a_pagar[indice]['categoria'] = categoria
         flash('Conta atualizada com sucesso.', 'success')
         return redirect('/index')
 

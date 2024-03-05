@@ -97,7 +97,7 @@
             <ul>
                 {% for conta in contas %}
                 <li{% if conta.paga %} class="paid" {% endif %}>
-                    {{ conta.descricao }} - R$ {{ conta.valor }}
+                    {{ conta.descricao }} - R$ {{ conta.valor }} | {{ conta.categoria }}
                     <a href="/pagar_conta/{{ loop.index0 }}">Pagar</a>
                     <a href="/editar_conta/{{ loop.index0 }}">Editar</a>
                     <a href="/excluir_conta/{{ loop.index0 }}">Excluir</a>
@@ -110,6 +110,8 @@
                 <input type="text" id="descricao" name="descricao"><br>
                 <label for="valor">Valor:</label>
                 <input type="text" id="valor" name="valor"><br>
+                <label for="categoria">Categoria:</label>
+                <input type="text" id="categoria" name="categoria"><br>
                 <input type="submit" value="Adicionar">
             </form>
             <form action="/logout" method="GET" class="logout-btn">
@@ -120,7 +122,7 @@
             <h2>Contas Pagas</h2>
             <ul>
                 {% for conta in contas_pagas %}
-                <li class="paid">{{ conta.descricao }} - R$ {{ conta.valor }}</li>
+                <li class="paid">{{ conta.descricao }} - R$ {{ conta.valor }} | Categoria: {{ conta.categoria }}</li>
                 {% endfor %}
             </ul>
             <p>Total Pago: R$ {{ total_contas_pagas }}</p>
