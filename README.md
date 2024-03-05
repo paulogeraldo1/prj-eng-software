@@ -18,7 +18,7 @@ Necessário ter o Pyhton instalado.
   pip install -r requirements.txt
 4. Inicie a aplicação:
   pyhton app.py
-5. Abra seu navegador e acesse http://localhost:5000 para visualizar a aplicação.
+5. Abra seu navegador e acesse http://localhost:8000 para visualizar a aplicação.
 
 ## Como usar em docker
 Basta executar o docker compose, e a aplicação estará rodando na sua porta 85
