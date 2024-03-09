@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Adiciona a mesma fonte */
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Cor de fundo */
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            height: 100vh; /* Define a altura da página como 100% da viewport */
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Mesma largura */
+        }
+
+        .card-header {
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-header h2 {
+            color: white; /* Altera a cor do texto para branco */
+            margin: 0; /* Remove a margem padrão do h2 */
+        }
+
+        .card-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column; /* Alinha os botões verticalmente */
+        }
+
+
+        form {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], input[type="submit"] {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 100%; /* Largura igual à largura do contêiner */
+            box-sizing: border-box; /* Inclui padding e borda na largura total */
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .flash-messages li {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+        <div class="card">
+            <div class="card-header">
+                <h2> App Financeiro </h2>
+            </div>
+
+            <div class="card-body">
+                <form action="/index" method="GET" class="logout-btn">
+                    <input type="submit" value="Conta Pessoal">
+                </form>
+
+                <form action="/conjunto" method="GET" class="logout-btn">
+                    <input type="submit" value="Conta Conjunta">
+                </form>
+
+                <form action="/logout" method="GET" class="logout-btn">
+                    <input type="submit" value="Logout">
+                </form>
+            </div>
+        </div>
+</body>
+</html>

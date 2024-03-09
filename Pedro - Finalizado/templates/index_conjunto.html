@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta Conjunta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex; /* Use flexbox para dividir em duas colunas */
+        }
+        .column {
+            flex: 50%; /* Cada coluna ocupará 50% da largura */
+            padding: 0 20px; /* Adicione um espaçamento interno */
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .paid {
+            color: #666;
+            text-decoration: line-through;
+        }
+        .flash-messages {
+            margin-top: 20px;
+        }
+        .flash-messages li {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="column">
+            <h1>Conta Conjunta</h1>
+            <h2>1º Renda: R$ {{ renda }}</h2>
+            <h2>2º Renda: R$ {{ renda_2 }}</h2>
+            <h2>1º Saldo Restante: R$ {{ saldo_restante }}</h2>
+            <h2>2º Saldo Restante: R$ {{ saldo_restante_2 }}</h2>
+
+            <form action="/conjunto/configurar_saldo_conjunto" method="POST"> <!-- Corrigido o caminho do action -->
+                <label for="renda">Informe a 1º Renda:</label>
+                <input type="text" id="renda" name="renda"><br>
+                <label for="renda_2">Informe a 2º Renda:</label>
+                <input type="text" id="renda_2" name="renda_2"><br>
+
+                <input type="submit" value="Configurar">
+            </form>
+
+
+            <h2>Contas a Pagar</h2>
+            <ul>
+                {% for conta in contas %}
+                    <li{% if conta.paga %} class="paid"{% endif %}>
+                        {{ conta.descricao }} - R$ {{ conta.valor }}
+                        <a href="/conjunto/pagar_conta_conjunto/{{ loop.index0 }}">Pagar</a>
+                        <a href="/conjunto/editar_conta_conjunto/{{ loop.index0 }}">Editar</a>
+                        <a href="/conjunto/excluir_conta_conjunto/{{ loop.index0 }}">Excluir</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h2>Adicionar Conta</h2>
+            <form action="/conjunto/adicionar_conta_conjunto" method="POST"> <!-- Corrigido o caminho do action -->
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao"><br>
+                <label for="valor">Valor:</label>
+                <input type="text" id="valor" name="valor"><br>
+
+                <label for="p1">1º Porcentagem:</label>
+                <input type="text" id="p1" name="p1"><br>
+                <label for="p2">2º Porcentagem:</label>
+                <input type="text" id="p2" name="p2"><br>
+
+
+                <input type="submit" value="Adicionar">
+            </form>
+
+            <form action="/limpar_conjunto" method="get">
+                <input type="submit" value="Limpar">
+            </form>
+
+            <form action="/menu" method="get" id="back-button">
+                <input type="submit" value="Voltar">
+            </form>
+
+        </div>
+        <div class="column">
+            <h2>Contas Pagas</h2>
+            <ul>
+                {% for conta in contas_pagas %}
+                    <li class="paid">{{ conta.descricao }} - R$ {{ conta.valor }}</li>
+                {% endfor %}
+            </ul>
+            <p>Total Pago: R$ {{ total_contas_pagas }}</p>
+
+            <!-- Exibir mensagens de erro -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+#De preferêncua dê os comandos estando dentro do diretório do projeot, pelo terminal no VSCode
+
+#necessário ter o python instalado e em seguida instalar o flask
+  pip install Flask
+  python.exe -m pip install --upgrade pip
+
+#fazer o clone do projeto
+  git clone git@github.com:paulogeraldo1/prj-eng-software.git
+
+#criar dua branch
+  git checkout -b SEU_NOME
+
+#commit inicial 
+  git add .
+  git commit -m "commit inicial"
+
+#push da sua branch para o github
+  git push origin SEU_NOME
+
+#para subsituir a versão local pela remota
+  git checkout BRANCH
+  git fetch origin
+  git reset --hard origin/BRANCH_REMOTA
+
+#obter as atualizações da main
+  git pull origin main
