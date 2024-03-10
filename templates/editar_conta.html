@@ -62,6 +62,17 @@
                         <label for="valor">Valor:</label>
                         <input type="text" id="valor" name="valor" class="form-control" value="{{ conta.valor }}">
                     </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <input list="categorias" id="categoria" name="categoria" class="form-control" value="{{ conta.categoria }}">
+                        <datalist id="categorias">
+                        <option value="Moradia">
+                        <option value="Comida">
+                        <option value="Lazer">
+                        <option value="Transporte">
+                        <option value="Viagens">
+                        <option value="Outras categorias">
+                    </div>
                     <button type="submit" class="btn btn-primary btn-block">Atualizar</button>
                 </form>
             </div>
