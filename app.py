@@ -19,12 +19,10 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Função para salvar os dados em um arquivo JSON
 def salvar_dados_json(dados, arquivo):
     with open(arquivo, 'w') as arquivo:
         json.dump(dados, arquivo)
 
-# Função para carregar os dados de um arquivo JSON
 def carregar_dados_json(arquivo):
     try:
         with open(arquivo, 'r') as arquivo:
@@ -33,7 +31,6 @@ def carregar_dados_json(arquivo):
     except FileNotFoundError:
         return None
 
-# Carregar os dados salvos das contas ao iniciar o aplicativo
 dados_salvos = carregar_dados_json('dados_contas.json')
 if dados_salvos:
     contas_a_pagar = dados_salvos.get('contas_a_pagar', [])
@@ -194,7 +191,6 @@ def editar_conta(indice):
 
         return redirect('/index')
 
-# Exemplo de como salvar os dados das contas a pagar em um arquivo JSON
 @app.route('/salvar_contas', methods=['GET'])
 @login_required
 def salvar_contas():
