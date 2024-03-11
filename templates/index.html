@@ -81,7 +81,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="column">
@@ -122,10 +121,9 @@
                 </datalist><br><br>
                 <input type="submit" value="Adicionar">
             </form>
-            <form action="/limpar_conjunto" method="get">
+            <form action="/limpar" method="get">
                 <input type="submit" value="Limpar">
             </form>
-
             <form action="/menu" method="get" id="back-button">
                 <input type="submit" value="Voltar">
             </form>
@@ -141,7 +139,6 @@
                 {% endfor %}
             </ul>
             <p>Total Pago: R$ {{ total_contas_pagas }}</p>
-
             <!-- Exibir mensagens de erro -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -155,5 +152,4 @@
         </div>
     </div>
 </body>
-
 </html>

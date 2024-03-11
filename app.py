@@ -34,12 +34,12 @@ def rota_autenticar():
 def rota_logout():
     return logout()
 
-
 #salvar_dados
 def salvar_dados_json(dados, arquivo):
     with open(arquivo, 'w') as arquivo:
         json.dump(dados, arquivo)
 
+#carregar dados
 def carregar_dados_json(arquivo):
     try:
         with open(arquivo, 'r') as arquivo:
@@ -47,6 +47,14 @@ def carregar_dados_json(arquivo):
             return dados
     except FileNotFoundError:
         return None
+    
+def carregar_dados_json_c(arquivo):
+    try:
+        with open(arquivo, 'r') as arquivo:
+            dados = json.load(arquivo)
+            return dados
+    except FileNotFoundError:
+        return None    
 
 dados_salvos = carregar_dados_json('dados_contas.json')
 if dados_salvos:
@@ -61,6 +69,24 @@ else:
     renda = 0
     saldo_restante = 0
 
+dados_salvos_c = carregar_dados_json_c('dados_contas_conjunta.json')
+if dados_salvos_c:
+    contas_a_pagar = dados_salvos_c.get('contas_a_pagar', [])
+    contas_pagas = dados_salvos_c.get('contas_pagas', [])
+    renda = dados_salvos_c.get('renda', 0)
+    renda_2 = dados_salvos_c.get('renda_2', 0)
+    saldo_restante = dados_salvos_c.get('saldo_restante', 0)
+    saldo_restante_2 = dados_salvos_c.get('saldo_restante_2', 0)
+else:
+    print('Arquivo de dados não encontrado. Iniciando com listas vazias.')
+    contas_a_pagar = []
+    contas_pagas = []
+    renda = 0
+    renda_2 = 0
+    saldo_restante = 0
+    saldo_restante_2 = 0
+
+#salvar contas
 @app.route('/salvar_contas', methods=['GET'])
 @login_required
 def salvar_contas():
@@ -77,20 +103,17 @@ def salvar_contas():
 @app.route('/salvar_contas_c', methods=['GET'])
 @login_required
 def salvar_contas_c():
-    global contas_a_pagar, contas_pagas, renda, saldo_restante, total_contas_pagas, total_contas_pagas_2
+    global contas_a_pagar, contas_pagas, renda, renda_2, saldo_restante, saldo_restante_2
     dados_contas_c = {
         'contas_a_pagar': contas_a_pagar,
         'contas_pagas': contas_pagas,
         'renda': renda,
-        'renda2': renda_2,
-        'saldo_restante_2': saldo_restante_2,
-        'p1': p1,
-        'p2': p2,
-        'total_contas_pagas':total_contas_pagas,
-        'total_contas_pagas_2':total_contas_pagas_2
+        'renda_2': renda_2,
+        'saldo_restante': saldo_restante,
+        'saldo_restante_2': saldo_restante_2
     }
     salvar_dados_json(dados_contas_c, 'dados_contas_conjunta.json')
-    return 'Dados das contas salvos com sucesso.'
+    return 'Dados das contas do conjunto salvos com sucesso.'
 
 @app.route('/index')
 @login_required
@@ -100,7 +123,8 @@ def index():
     
     salvar_contas()
 
-    return render_template('index.html', contas=contas_a_pagar, contas_pagas=contas_pagas, renda=renda, saldo_restante=saldo_restante, total_contas_pagas=total_contas_pagas)
+    return render_template('index.html', contas=contas_a_pagar, contas_pagas=contas_pagas, renda=renda, 
+                           saldo_restante=saldo_restante, total_contas_pagas=total_contas_pagas)
 
 
 #operacoes
@@ -221,6 +245,16 @@ def editar_conta(indice):
 
         return redirect('/index')
 
+@app.route('/limpar')
+@login_required
+def limpar():
+    global contas_a_pagar, contas_pagas, renda, saldo_restante
+    contas_a_pagar = []
+    contas_pagas = []
+    renda = 0
+    saldo_restante = 0
+    
+    return redirect('/index')
 
 #menu
 @app.route('/menu')
@@ -402,7 +436,6 @@ def limpar_conjunto():
     saldo_restante = 0
     saldo_restante_2 = 0
 
-    salvar_contas_c()
     
     return redirect('/conjunto')
 
